@@ -6,6 +6,8 @@ import { tool } from "ai";
 import type { ReactNode } from "react";
 import { z } from "zod";
 
+const user = { email: "user@example.com" };
+
 const zap = createZapClient({
   apiKey: process.env.NEXT_PUBLIC_OPENROUTER_API_KEY || "sk-or-placeholder",
   model: "stepfun/step-3.5-flash",
@@ -16,17 +18,30 @@ const zap = createZapClient({
     getUserEmail: tool({
       description: "Get the current user email",
       parameters: z.object({}),
-      execute: async () => "user@example.com",
+      execute: async () => user.email,
     }),
     setUserEmail: tool({
       description: "Update the user email",
       parameters: z.object({ email: z.string() }),
-      execute: async ({ email }) => `Email updated to ${email}`,
+      execute: async ({ email }) => {
+        user.email = email;
+        return `Email updated to ${email}`;
+      },
     }),
     alert: tool({
-      description: "just an alert message",
+      description: "Show an alert message to the user",
       parameters: z.object({ message: z.string() }),
-      execute: async ({ message }) => alert(message),
+      execute: async ({ message }) => {
+        alert(message);
+        return `Alert shown: "${message}"`;
+      },
+    }),
+    localstorage: tool({
+      description: "read local storage",
+      parameters: z.object({ key: z.string() }),
+      execute: async ({key:lsKey}) => {
+        return localStorage.getItem(lsKey);
+      },
     }),
   },
 });

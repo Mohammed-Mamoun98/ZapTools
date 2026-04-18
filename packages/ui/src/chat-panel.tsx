@@ -14,9 +14,9 @@ interface MessageProps {
 function TypingIndicator() {
   return (
     <div className="typing">
-      <span/>
-      <span/>
-      <span/>
+      <span />
+      <span />
+      <span />
     </div>
   );
 }
@@ -24,7 +24,7 @@ function TypingIndicator() {
 function ToolBadge({ toolName }: { toolName: string }) {
   return (
     <div className="tool-badge">
-      <div className="tool-dot"/>
+      <div className="tool-dot" />
       calling {toolName}
     </div>
   );
@@ -54,6 +54,7 @@ export function ChatPanel({ isOpen, onClose, className }: ChatPanelProps) {
     { role: "user" | "assistant"; content: string; toolName?: string }[]
   >([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isWaiting, setIsWaiting] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const chatPanelRef = useRef<HTMLDivElement>(null);
@@ -78,6 +79,7 @@ export function ChatPanel({ isOpen, onClose, className }: ChatPanelProps) {
     setInput("");
     setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
     setIsLoading(true);
+    setIsWaiting(true);
 
     try {
       const stream = client.chat([
@@ -86,12 +88,7 @@ export function ChatPanel({ isOpen, onClose, className }: ChatPanelProps) {
       ]);
 
       let assistantContent = "";
-      let currentToolName: string | undefined;
-
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: "", toolName: undefined },
-      ]);
+      let segmentStarted = false;
 
       for await (const chunk of stream) {
         const streamChunk = chunk as ChatStreamChunk;
@@ -99,39 +96,88 @@ export function ChatPanel({ isOpen, onClose, className }: ChatPanelProps) {
         switch (streamChunk.type) {
           case "text": {
             assistantContent += streamChunk.content;
-            setMessages((prev) => [
-              ...prev.slice(0, -1),
-              { role: "assistant", content: assistantContent, toolName: currentToolName },
-            ]);
+            setIsWaiting(false);
+            if (!segmentStarted) {
+              segmentStarted = true;
+              setMessages((prev) => [
+                ...prev,
+                {
+                  role: "assistant",
+                  content: assistantContent,
+                  toolName: undefined,
+                },
+              ]);
+            } else {
+              setMessages((prev) => [
+                ...prev.slice(0, -1),
+                {
+                  role: "assistant",
+                  content: assistantContent,
+                  toolName: undefined,
+                },
+              ]);
+            }
             break;
           }
           case "tool_call": {
-            currentToolName = streamChunk.toolName;
-            setMessages((prev) => [
-              ...prev.slice(0, -1),
-              { role: "assistant", content: assistantContent, toolName: currentToolName },
-            ]);
+            setIsWaiting(false);
+            if (!segmentStarted) {
+              segmentStarted = true;
+              setMessages((prev) => [
+                ...prev,
+                {
+                  role: "assistant",
+                  content: assistantContent,
+                  toolName: streamChunk.toolName,
+                },
+              ]);
+            } else {
+              setMessages((prev) => [
+                ...prev.slice(0, -1),
+                {
+                  role: "assistant",
+                  content: assistantContent,
+                  toolName: streamChunk.toolName,
+                },
+              ]);
+            }
             break;
           }
           case "tool_result": {
-            currentToolName = undefined;
-            setMessages((prev) => [
-              ...prev.slice(0, -1),
-              { role: "assistant", content: assistantContent, toolName: undefined },
-            ]);
+            if (assistantContent) {
+              setMessages((prev) => [
+                ...prev.slice(0, -1),
+                {
+                  role: "assistant",
+                  content: assistantContent,
+                  toolName: undefined,
+                },
+              ]);
+            } else {
+              // Nothing to show — drop the empty bubble so the next segment starts fresh
+              setMessages((prev) => prev.slice(0, -1));
+            }
+            assistantContent = "";
+            segmentStarted = false;
+            setIsWaiting(true);
             break;
           }
         }
       }
     } catch (error) {
       const errorMessage =
-        error instanceof Error ? error.message : "An error occurred";
+        error instanceof Error
+          ? error.message || error.name || "Unknown error"
+          : typeof error === "string"
+            ? error
+            : "An unexpected error occurred";
       setMessages((prev) => [
         ...prev,
         { role: "assistant", content: `Error: ${errorMessage}` },
       ]);
     } finally {
       setIsLoading(false);
+      setIsWaiting(false);
     }
   };
 
@@ -367,7 +413,7 @@ export function ChatPanel({ isOpen, onClose, className }: ChatPanelProps) {
             <div>
               <div className="chat-name">Zap Assistant</div>
               <div className="chat-status">
-                <div className="status-dot"/> online · zap-tools/sdk
+                <div className="status-dot" /> online · zap-tools/sdk
               </div>
             </div>
           </div>
@@ -401,13 +447,13 @@ export function ChatPanel({ isOpen, onClose, className }: ChatPanelProps) {
           )}
           {messages.map((msg, idx) => (
             <Message
-              key={`${msg}-m`}
+              key={msg.content.length ? msg.content[0] : msg.content}
               role={msg.role}
               content={msg.content}
               toolName={msg.toolName}
             />
           ))}
-          {isLoading && (
+          {isWaiting && (
             <div className="msg ai">
               <TypingIndicator />
             </div>

@@ -36,9 +36,10 @@ export function createZapClient(config: ZapClientConfig): ZapClient {
           parameters: toolDef.parameters,
           execute: async (args: unknown) => {
             try {
-              return await toolDef.execute(
+              const result = await toolDef.execute(
                 args as Parameters<typeof toolDef.execute>[0],
               );
+              return result ?? "done";
             } catch (error) {
               const errorMessage =
                 error instanceof Error ? error.message : "Unknown error";
