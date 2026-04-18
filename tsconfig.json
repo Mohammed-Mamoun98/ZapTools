@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@zap-tools/sdk": ["./packages/sdk/src"],
+      "@zap-tools/ui": ["./packages/ui/src"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx"]
+}
