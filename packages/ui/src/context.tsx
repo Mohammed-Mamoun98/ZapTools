@@ -1,31 +1,20 @@
 "use client";
 
-import type { ZapClient } from "@zap-tools/sdk";
-import { createContext, useContext, useState } from "react";
+import type { ZapChatState } from "@zap-tools/sdk/client";
+import { createContext, useContext } from "react";
 
-interface ZapContextType {
-  client: ZapClient | null;
-  setClient: (client: ZapClient | null) => void;
-}
+interface ZapContextType extends ZapChatState {}
 
 const ZapContext = createContext<ZapContextType | undefined>(undefined);
 
 export function ZapProvider({
   children,
-  client,
+  chat,
 }: {
   children: React.ReactNode;
-  client: ZapClient;
+  chat: ZapChatState;
 }) {
-  const [clientState, setClientState] = useState<ZapClient | null>(client);
-
-  return (
-    <ZapContext.Provider
-      value={{ client: clientState, setClient: setClientState }}
-    >
-      {children}
-    </ZapContext.Provider>
-  );
+  return <ZapContext.Provider value={chat}>{children}</ZapContext.Provider>;
 }
 
 export function useZap() {
