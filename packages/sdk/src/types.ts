@@ -1,5 +1,7 @@
 import type { z } from "zod";
 
+// ─── Shared ───
+
 export interface ZapMessage {
   role: "user" | "assistant";
   content: string;
@@ -12,33 +14,32 @@ export interface ZapTool<Args = Record<string, unknown>, Result = unknown> {
   execute: (args: Args, ...rest: any[]) => PromiseLike<Result> | Result;
 }
 
-export interface ZapClientConfig {
+// ─── Server-side (createZapServer) ───
+
+export interface ZapServerConfig {
   apiKey: string;
   model?: string;
   maxSteps?: number;
   systemPrompt: string;
   // biome-ignore lint/suspicious/noExplicitAny: tool args/results are schema-typed at runtime via zod
-  tools: Record<string, ZapTool<any, any>>;
+  tools?: Record<string, ZapTool<any, any>>;
 }
 
-export interface ChatChunk {
-  type: "text";
-  content: string;
+export interface ZapServer {
+  handleRequest: (req: Request) => Promise<Response>;
 }
 
-export interface ToolCallChunk {
-  type: "tool_call";
-  toolName: string;
+// ─── Client-side (useZapChat) ───
+
+export interface ZapChatConfig {
+  endpoint: string;
 }
 
-export interface ToolResultChunk {
-  type: "tool_result";
-  toolName: string;
-  result: unknown;
-}
-
-export type ChatStreamChunk = ChatChunk | ToolCallChunk | ToolResultChunk;
-
-export interface ZapClient {
-  chat: (messages: ZapMessage[]) => AsyncIterable<ChatStreamChunk>;
+export interface ZapChatState {
+  messages: ZapMessage[];
+  input: string;
+  setInput: (input: string) => void;
+  handleSubmit: (e: React.FormEvent) => void;
+  isLoading: boolean;
+  isWaiting: boolean;
 }

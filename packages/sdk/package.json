@@ -4,6 +4,16 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./client": {
+      "import": "./dist/client-entry.js",
+      "types": "./dist/client-entry.d.ts"
+    }
+  },
   "scripts": {
     "build": "tsdown",
     "clean": "rm -rf dist",
@@ -12,7 +22,8 @@
   },
   "dependencies": {
     "ai": "^4.1.0",
-    "zod": "^3.24.0"
+    "zod": "^3.24.0",
+    "@openrouter/ai-sdk-provider": "^0.1.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

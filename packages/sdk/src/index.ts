@@ -1,8 +1,8 @@
-export { createZapClient } from "./client";
+// Server-side (import from '@zap-tools/sdk')
+export { createZapServer } from "./server";
 export type {
-  ZapClient,
-  ZapClientConfig,
+  ZapServerConfig,
+  ZapServer,
   ZapMessage,
   ZapTool,
-  ChatStreamChunk
 } from "./types";

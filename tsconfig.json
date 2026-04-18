@@ -13,6 +13,7 @@
     "forceConsistentCasingInFileNames": true,
     "paths": {
       "@zap-tools/sdk": ["./packages/sdk/src"],
+      "@zap-tools/sdk/client": ["./packages/sdk/src/client-entry"],
       "@zap-tools/ui": ["./packages/ui/src"]
     }
   },
