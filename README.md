@@ -77,6 +77,26 @@ pnpm build
 cd apps/example && pnpm dev
 ```
 
+## Recommended Models
+
+ZapTools uses OpenRouter, which gives you access to hundreds of models — including free ones. For development and prototyping, we recommend using free models to avoid costs:
+
+| Model | Cost | Link |
+|-------|------|------|
+| `stepfun/step-3.5-flash` | Free | [OpenRouter](https://openrouter.ai/stepfun/step-3.5-flash:free) |
+
+To use a free model, just update the `model` field when creating your client:
+
+```ts
+const client = createZapClient({
+  apiKey: process.env.OPENROUTER_API_KEY!,
+  model: "stepfun/step-3.5-flash:free",
+  systemPrompt: "You are a helpful assistant.",
+});
+```
+
+> **Note:** Free models may have rate limits or lower context windows. Swap to a paid model for production workloads.
+
 ## Tech Stack
 
 - **Turborepo** — monorepo build system
