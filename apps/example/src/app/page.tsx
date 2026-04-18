@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { CodeBlock, CodeBlockCopyButton } from "@/components/CodeBlock";
-import { ZapWidget } from "@zap-tools/ui";
 
-const codeExample = `import { createZapClient } from '@zap-tools/sdk'
+const codeExample = `import { createZapServer } from '@zap-tools/sdk'
+import { useZapChat } from '@zap-tools/sdk'
 import { ZapProvider, ZapWidget } from '@zap-tools/ui'
 
-const zap = createZapClient({
-  apiKey: 'sk-or-...',
+// Server — app/api/chat/route.ts
+const zap = createZapServer({
+  apiKey: process.env.OPENROUTER_API_KEY,
   systemPrompt: 'You are a helpful assistant.',
   tools: {
     getUserEmail: tool({
@@ -14,16 +15,24 @@ const zap = createZapClient({
       execute: () => user.email,
     }),
   },
+  clientTools: ['alert'],
+})
+export POST = (req) => zap.handleRequest(req)
+
+// Client — providers.tsx
+const chat = useZapChat({
+  endpoint: '/api/chat',
+  clientTools: {
+    alert: tool({ execute: ({ msg }) => alert(msg) }),
+  },
 })
 
-export default function App() {
-  return (
-    <ZapProvider client={zap}>
-      <YourApp />
-      <ZapWidget /> // ← that's it
-    </ZapProvider>
-  )
-}`;
+export App = () => (
+  <ZapProvider chat={chat}>
+    <YourApp />
+    <ZapWidget />
+  </ZapProvider>
+)`;
 
 export default function Home() {
   return (
@@ -35,7 +44,7 @@ export default function Home() {
         </div>
 
         {/* Glow Orb */}
-        <div className="fixed w-[500px] h-[500px] top-[-100px] right-[15%] z-0 pointer-events-none">
+        <div className="fixed w-[500px] h-[500px] top[-100px] right-[15%] z-0 pointer-events-none">
           <div className="w-full h-full rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.15)_0%,transparent_70%)]" />
         </div>
 
@@ -87,7 +96,7 @@ export default function Home() {
             </span>
           </h1>
           <p className="text-base leading-8 text-white/45 max-w-[420px] font-mono">
-            One function. Any tools. Full streaming. Built on Vercel AI SDK and
+            Server-side key. Client-side tools. Full streaming. Built on Vercel AI SDK and
             OpenRouter.
           </p>
           <div className="flex gap-3 mt-9">
@@ -124,7 +133,7 @@ export default function Home() {
             </div>
             <h3 className="text-xs font-bold mb-2.5">Tool-aware AI</h3>
             <p className="text-[11px] leading-7 text-white/38 font-mono">
-              Pass Zod-typed tools. The AI calls them automatically, up to
+              Split tools between server and client. The AI calls them automatically, up to
               maxSteps loops.
             </p>
           </div>
@@ -140,16 +149,14 @@ export default function Home() {
           </div>
           <div className="bg-[#0a0a0f] p-8 transition-colors hover:bg-white/2">
             <div className="w-9.5 h-9.5 mb-4 rounded-lg flex items-center justify-center bg-[#60a5fa]/8 text-xs">
-              🎛️
+              🔐
             </div>
-            <h3 className="text-xs font-bold mb-2.5">Any OpenRouter model</h3>
+            <h3 className="text-xs font-bold mb-2.5">Key stays server-side</h3>
             <p className="text-[11px] leading-7 text-white/38 font-mono">
-              Pass any model string. Defaults to gpt-4o-mini. Switch in one
-              line.
+              API key never touches the browser. Secure by default, no proxy needed.
             </p>
           </div>
         </div>
-        <ZapWidget />
       </div>
     </>
   );
