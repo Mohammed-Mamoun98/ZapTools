@@ -255,7 +255,12 @@ export default function ExamplesPage() {
             </Link>
           </li>
           <li>
-            <Link href="https://github.com/Mohammed-Mamoun98/ZapTools" target="_blank" rel="noopener noreferrer" className="hover:text-white/90 transition-colors">
+            <Link
+              href="https://github.com/Mohammed-Mamoun98/ZapTools"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white/90 transition-colors"
+            >
               GitHub
             </Link>
           </li>

@@ -71,7 +71,9 @@ export default function Home() {
             </li>
             <li>
               <Link
-                href="https://github.com/Mohammed-Mamoun98/ZapTools" target="_blank" rel="noopener noreferrer"
+                href="https://github.com/Mohammed-Mamoun98/ZapTools"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="hover:text-white/90 transition-colors"
               >
                 GitHub
@@ -112,7 +114,9 @@ export default function Home() {
               Get started <span className="font-[Syne]">→</span>
             </button>
             <a
-              href="https://github.com/Mohammed-Mamoun98/ZapTools" target="_blank" rel="noopener noreferrer"
+              href="https://github.com/Mohammed-Mamoun98/ZapTools"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-1 px-5.5 py-3 rounded-md text-sm font-semibold border border-white/10 text-white/45 hover:border-white/22 hover:text-white/80 transition-all"
             >
               View on GitHub

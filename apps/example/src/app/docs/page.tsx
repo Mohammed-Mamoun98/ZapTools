@@ -88,7 +88,9 @@ export default function DocsPage() {
           </li>
           <li>
             <Link
-              href="https://github.com/Mohammed-Mamoun98/ZapTools" target="_blank" rel="noopener noreferrer"
+              href="https://github.com/Mohammed-Mamoun98/ZapTools"
+              target="_blank"
+              rel="noopener noreferrer"
               className="hover:text-white/90 transition-colors"
             >
               GitHub

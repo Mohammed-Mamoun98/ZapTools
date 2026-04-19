@@ -14,7 +14,10 @@ function TypingIndicator() {
   );
 }
 
-function Message({ role, content }: { role: "user" | "assistant"; content: string }) {
+function Message({
+  role,
+  content,
+}: { role: "user" | "assistant"; content: string }) {
   const isUser = role === "user";
 
   return (

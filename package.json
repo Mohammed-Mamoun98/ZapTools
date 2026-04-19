@@ -1,13 +1,14 @@
 {
   "name": "zap-tools-root",
-  "private": true,
+  "private": false,
   "type": "module",
   "packageManager": "pnpm@9.0.0",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "biome check .",
-    "format": "biome format --write ."
+    "format": "biome format --write .",
+    "publish:pkg": "node scripts/publish-pkg.mjs"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

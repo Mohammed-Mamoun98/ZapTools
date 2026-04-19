@@ -1,6 +1,7 @@
 {
   "name": "@zap-tools/sdk",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "description": "ZapTools SDK \u2014 createZapServer (server) and useZapChat hook (client via /client subpath)",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -14,6 +15,30 @@
       "types": "./dist/client-entry.d.ts"
     }
   },
+  "files": ["dist", "README.md", "LICENSE"],
+  "sideEffects": false,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mohammed-Mamoun98/ZapTools.git",
+    "directory": "packages/sdk"
+  },
+  "homepage": "https://github.com/Mohammed-Mamoun98/ZapTools#readme",
+  "bugs": {
+    "url": "https://github.com/Mohammed-Mamoun98/ZapTools/issues"
+  },
+  "keywords": [
+    "ai",
+    "chat",
+    "openrouter",
+    "vercel-ai-sdk",
+    "streaming",
+    "tool-calling",
+    "zap-tools",
+    "react-hook",
+    "client-hook"
+  ],
+  "author": "Mohammed Alshaer",
   "scripts": {
     "build": "tsdown",
     "clean": "rm -rf dist",
@@ -28,6 +53,12 @@
   "devDependencies": {
     "@types/node": "^22.0.0",
     "tsdown": "^0.12.0",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   }
 }

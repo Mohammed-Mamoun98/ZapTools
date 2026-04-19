@@ -1,5 +1,7 @@
 # ZapTools
 
+[![License: MIT][license-badge]][license] [![Build with Turborepo][build-badge]][build]
+
 Drop an AI chat widget into any React app in minutes. Server-side API key, tool calling, full streaming — built on Vercel AI SDK and OpenRouter.
 
 ## Packages
@@ -173,6 +175,10 @@ pnpm build
 
 # Run the example app
 cd apps/example && pnpm dev
+
+# Lint and format
+pnpm lint
+pnpm format
 ```
 
 ## Recommended Models
@@ -203,3 +209,22 @@ const zap = createZapServer({
 - **Zod** — tool parameter schemas
 - **Biome** — linting and formatting
 - **tsdown** — package bundler
+
+## Contributing
+
+1. Fork the repo
+2. Create your branch: `git checkout -b feat/my-feature`
+3. Commit changes following [Conventional Commits](https://www.conventionalcommits.org/)
+4. Push: `git push origin feat/my-feature`
+5. Open a Pull Request
+
+Please run `pnpm build` and `pnpm lint` before submitting.
+
+## License
+
+[MIT](./LICENSE) © Mohammed Alshaer
+
+[license-badge]: https://img.shields.io/badge/license-MIT-blue.svg
+[license]: ./LICENSE
+[build-badge]: https://img.shields.io/badge/build-turborepo-orange.svg
+[build]: https://turborepo.org
