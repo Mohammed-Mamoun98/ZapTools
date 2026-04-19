@@ -9,7 +9,7 @@ export function createZapServer(config: ZapServerConfig) {
     apiKey: config.apiKey,
   });
 
-  const model = config.model ?? process.env.ZAP_MODEL ?? DEFAULT_MODEL;
+  const model = config.model ?? DEFAULT_MODEL;
   const maxSteps = config.maxSteps ?? 5;
 
   return {
