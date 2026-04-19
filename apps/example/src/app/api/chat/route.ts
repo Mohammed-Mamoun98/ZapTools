@@ -4,7 +4,6 @@ import { z } from "zod";
 
 const zap = createZapServer({
   apiKey: process.env.OPENROUTER_API_KEY!,
-  model: "stepfun/step-3.5-flash",
   maxSteps: 5,
   systemPrompt:
     "You are a helpful assistant that can answer questions and use tools.",
