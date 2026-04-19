@@ -80,3 +80,13 @@
 - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`
 - Use `!` after type for breaking changes (e.g. `feat(sdk)!: change server config API`)
 - Include `BREAKING CHANGE:` in footer for breaking changes
+
+## Commit Strategy
+
+- Group changes into logical commits — not too big, not too small
+- Each commit should represent one coherent concern (e.g. SDK refactor, UI adaptation, example app, docs)
+- Order commits by dependency: foundation changes first, dependents after
+- Scope commits to package boundaries when possible: `(sdk)`, `(ui)`, `(example)`, or root
+- Every commit must leave the project in a buildable state (`pnpm build` must pass)
+- Avoid mixing refactors, features, and docs in the same commit
+- Typical commit flow for cross-cutting changes: core package → dependent packages → apps → docs
