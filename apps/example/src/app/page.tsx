@@ -15,16 +15,12 @@ const zap = createZapServer({
       execute: () => user.email,
     }),
   },
-  clientTools: ['alert'],
 })
 export POST = (req) => zap.handleRequest(req)
 
 // Client — providers.tsx
 const chat = useZapChat({
   endpoint: '/api/chat',
-  clientTools: {
-    alert: tool({ execute: ({ msg }) => alert(msg) }),
-  },
 })
 
 export App = () => (
